@@ -1,6 +1,6 @@
 # Card App
 
-The scrolling on the page is endless. After 100 posts, 1 post starts again.
+The Picasso test task. A page with publications. The page scrolling is endless. After 100 publications, 1 publication starts again. It is possible to open detailed information about the post. The deployment is deployed on netlify.
 Written in React ([Create React App](https://github.com/facebook/create-react-app#create-react-app--))
 
 # Tools
@@ -8,6 +8,10 @@ Written in React ([Create React App](https://github.com/facebook/create-react-ap
 - React
 - RTK QUERY
 - MUI
+
+# Link
+
+- Netlify: [Pages](https://cardappreact.netlify.app/)
 
 # Screen
 
