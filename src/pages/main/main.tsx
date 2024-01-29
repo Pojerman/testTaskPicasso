@@ -8,47 +8,44 @@ import scrollToTop from "../../features/scroll-to-top/scroll-to-top";
 import {IconButton} from "@mui/material";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {CARD_SIZE, SCROLL_THRESHOLD} from "../../shared/const/const";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Main() {
     const [displayedPosts, setDisplayedPosts] = useState<PostDetails[]>([]);
     const [showScrollButton, setShowScrollButton] = useState(false);
-
     const { data: allPosts, isLoading } = useGetPostsQuery({});
 
     useEffect(() => {
-        const loadInitialPosts = () => {
-            if (allPosts && allPosts.length > 0) {
-                const initialPosts = allPosts.slice(0, CARD_SIZE);
-                setDisplayedPosts(initialPosts);
-            }
-        };
-
-        loadInitialPosts();
-    }, [allPosts]);
-
-    useEffect(() => {
-        const loadNextPosts = () => {
-            if (allPosts && allPosts.length > 0) {
-                const startIndex = displayedPosts.length % allPosts.length;
-                const nextPosts = allPosts.slice(startIndex, startIndex + CARD_SIZE);
-                setDisplayedPosts((prevPosts) => [...prevPosts, ...nextPosts]);
-            }
-        };
-
-        const handleScroll = () => {
-            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-            setShowScrollButton(scrollTop > SCROLL_THRESHOLD);
-            if (scrollTop + clientHeight >= scrollHeight - 100) {
-                loadNextPosts();
-            }
-        };
+        if (allPosts && allPosts.length > 0) {
+            const initialPosts = allPosts.slice(0, CARD_SIZE);
+            setDisplayedPosts(initialPosts);
+        }
 
         window.addEventListener('scroll', handleScroll);
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [allPosts, displayedPosts]);
+    }, [allPosts]);
+
+    const loadNextPosts = () => {
+        setTimeout(() => {
+            const startIndex = displayedPosts.length;
+            const endIndex = startIndex + CARD_SIZE;
+
+            if (startIndex >= allPosts.length) {
+                return;
+            }
+
+            const nextPosts = allPosts.slice(startIndex, endIndex);
+            setDisplayedPosts((prevPosts) => [...prevPosts, ...nextPosts]);
+        }, 1000)
+    }
+
+    const handleScroll = () => {
+        const { scrollTop} = document.documentElement;
+        setShowScrollButton(scrollTop > SCROLL_THRESHOLD);
+    };
 
     if(isLoading) {
         return(<LoadingSpinner/>)
@@ -57,7 +54,14 @@ export default function Main() {
     return(
         <>
             <Header></Header>
-            <PostList posts={displayedPosts}></PostList>
+            <InfiniteScroll
+                dataLength={displayedPosts.length}
+                next={loadNextPosts}
+                hasMore={true}
+                loader={<h4>Loading...</h4>}
+            >
+                <PostList posts={displayedPosts}></PostList>
+            </InfiniteScroll>
             {showScrollButton && (
                 <IconButton
                     style={{
