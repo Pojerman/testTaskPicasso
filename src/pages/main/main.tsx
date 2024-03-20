@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import PostList from "../../features/post-list/post-list";
-import Header from "../../features/header/header";
+import PostList from "../../widgets/post-list/post-list";
+import Header from "../../widgets/header/header";
 import {useGetPostsQuery} from "../../shared/store/api/api";
 import LoadingSpinner from "../../features/loading-spinner/loading-spinner";
 import {PostDetails} from "../../shared/types/card";

@@ -1,4 +1,4 @@
-import Header from "../../features/header/header";
+import Header from "../../widgets/header/header";
 import {PostCard} from "../../features/post-card/post-card";
 import {useGetPostByIdQuery} from "../../shared/store/api/api";
 import {useParams} from "react-router-dom";
