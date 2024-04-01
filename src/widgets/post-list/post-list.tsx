@@ -1,4 +1,4 @@
-import {PostCard} from "../post-card/post-card";
+import {PostCard} from "../../features/post-card/post-card";
 import {PostDetails} from "../../shared/types/card";
 import "./post-list.css";
 
